@@ -13,14 +13,18 @@ async function getUser(id: number) {
   return { id, name: "Kyle" };
 }
 
+let user;
 try {
-  // 1. User variable is scoped to the try block and cannot be accessed outside of it!
-  const user = await getUser(1);
-  // Lots of code that users the user
-  console.log(usr); // 2. Attempting to log 'usr' (which is undefined) will cause a ReferenceError and trigger the catch block,
-  // even though id !== 2
+  user = await getUser(1);
 } catch (error) {
   console.log("There was an error");
 }
+
+// Lots of code that users the user
+console.log(usr); // error: Uncaught (in promise) ReferenceError: usr is not defined
+
+user = 1; // that's going to redefine my user variable
+// which is definitely not ideal
+// so there's a lot of problems with try catch
 
 export {};
