@@ -13,18 +13,23 @@ async function getUser(id: number) {
   return { id, name: "Kyle" };
 }
 
-let user;
-try {
-  user = await getUser(1);
-} catch (error) {
-  console.log("There was an error");
+function catchError<T>(promise: Promise<T>): Promise<[undefined, T] | [Error]> {
+  return promise
+    .then((data) => {
+      return [undefined, data] as [undefined, T];
+    })
+    .catch((error) => {
+      return [error];
+    });
 }
 
-// Lots of code that users the user
-console.log(usr); // error: Uncaught (in promise) ReferenceError: usr is not defined
+const [error, user] = await catchError(getUser(1));
 
-user = 1; // that's going to redefine my user variable
-// which is definitely not ideal
-// so there's a lot of problems with try catch
+if (error) {
+  console.log("There was an error", error.message);
+} else {
+  // Lots of code that users the user
+  console.log(user);
+}
 
 export {};
