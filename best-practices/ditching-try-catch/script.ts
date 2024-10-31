@@ -7,23 +7,51 @@ function wait(duration: number) {
 async function getUser(id: number) {
   await wait(1000);
   if (id === 2) {
-    throw new Error("404 - User does not exist");
+    throw new CustomError("404 - User does not exist");
   }
 
   return { id, name: "Kyle" };
 }
 
-function catchError<T>(promise: Promise<T>): Promise<[undefined, T] | [Error]> {
+// Basic fix
+// function catchError<T>(promise: Promise<T>): Promise<[undefined, T] | [Error]> {
+//   return promise
+//     .then((data) => {
+//       return [undefined, data] as [undefined, T];
+//     })
+//     .catch((error) => {
+//       return [error];
+//     });
+// }
+
+// Advanced fix
+function catchErrorTyped<T, E extends new (message?: string) => Error>(
+  promise: Promise<T>,
+  errorsToCatch?: E[]
+): Promise<[undefined, T] | [InstanceType<E>]> {
   return promise
     .then((data) => {
       return [undefined, data] as [undefined, T];
     })
     .catch((error) => {
-      return [error];
+      if (errorsToCatch == undefined) {
+        return [error];
+      }
+
+      if (errorsToCatch.some((e) => error instanceof e)) {
+        return [error];
+      }
+
+      throw error;
     });
 }
 
-const [error, user] = await catchError(getUser(1));
+class CustomError extends Error {
+  name = "CustomError";
+  extraProp = "ERROR: test";
+}
+
+const [error, user] = await catchErrorTyped(getUser(2), [CustomError]);
 
 if (error) {
   console.log("There was an error", error.message);
