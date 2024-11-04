@@ -1,14 +1,27 @@
-let p = new Promise((resolve, reject) => {
-  let a = 1 + 1;
-  if (a == 2) {
-    resolve("Success");
-  } else {
-    reject("Failed");
-  }
-});
+const userLeft = true;
+const userWatchingCatMeme = false;
 
-p.then((message) => {
-  console.log("This is in the then " + message);
-}).catch((message) => {
-  console.log("This is in the catch " + message);
-});
+function watchTutorialCallback(callback, errorCallback) {
+  if (userLeft) {
+    errorCallback({
+      name: "User Left",
+      message: ":(",
+    });
+  } else if (userWatchingCatMeme) {
+    errorCallback({
+      name: "User Watching Cat Meme",
+      message: "WebDevSimplified < Cat",
+    });
+  } else {
+    callback("Thumbs up and Subscribe");
+  }
+}
+
+watchTutorialCallback(
+  (message) => {
+    console.log("Success: " + message);
+  },
+  (error) => {
+    console.log(error.name + " " + error.message);
+  }
+);
