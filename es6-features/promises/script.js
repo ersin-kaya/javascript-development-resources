@@ -55,18 +55,18 @@
 const recordVideoOne = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve("Video 1 Recorded");
-  }, 2500);
+  }, 1500);
 });
 
 const recordVideoTwo = new Promise((resolve, reject) => {
   setTimeout(() => {
-    resolve("Video 2 Recorded");
+    reject("Video 2 Recorded");
   }, 1750);
 });
 
 const recordVideoThree = new Promise((resolve, reject) => {
   setTimeout(() => {
-    resolve("Video 3 Recorded");
+    reject("Video 3 Recorded");
   }, 2000);
 });
 
@@ -76,8 +76,16 @@ const recordVideoThree = new Promise((resolve, reject) => {
 //   }
 // );
 
-Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
-  (messages) => {
+// Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
+//   (messages) => {
+//     console.log(messages);
+//   }
+// );
+
+Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree])
+  .then((messages) => {
     console.log(messages);
-  }
-);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
