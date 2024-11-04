@@ -53,15 +53,21 @@
 //   });
 
 const recordVideoOne = new Promise((resolve, reject) => {
-  resolve("Video 1 Recorded");
+  setTimeout(() => {
+    resolve("Video 1 Recorded");
+  }, 2500);
 });
 
 const recordVideoTwo = new Promise((resolve, reject) => {
-  resolve("Video 2 Recorded");
+  setTimeout(() => {
+    resolve("Video 2 Recorded");
+  }, 1750);
 });
 
 const recordVideoThree = new Promise((resolve, reject) => {
-  resolve("Video 3 Recorded");
+  setTimeout(() => {
+    resolve("Video 3 Recorded");
+  }, 2000);
 });
 
 Promise.race([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
