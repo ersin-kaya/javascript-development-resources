@@ -70,8 +70,14 @@ const recordVideoThree = new Promise((resolve, reject) => {
   }, 2000);
 });
 
-Promise.race([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
-  (message) => {
-    console.log(message);
+// Promise.race([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
+//   (message) => {
+//     console.log(message);
+//   }
+// );
+
+Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
+  (messages) => {
+    console.log(messages);
   }
 );
