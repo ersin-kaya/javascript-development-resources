@@ -82,10 +82,25 @@ const recordVideoThree = new Promise((resolve, reject) => {
 //   }
 // );
 
-Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree])
-  .then((messages) => {
-    console.log(messages);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+// Promise.all([recordVideoOne, recordVideoTwo, recordVideoThree])
+//   .then((messages) => {
+//     console.log(messages);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+
+Promise.allSettled([recordVideoOne, recordVideoTwo, recordVideoThree]).then(
+  (results) => {
+    results.forEach((result) => {
+      // Can be modified as needed
+      if (result.status === "fulfilled") {
+        // fulfilled => value
+        console.log(result.value);
+      } else {
+        // rejected => reason
+        console.log("Error: ", result.reason);
+      }
+    });
+  }
+);
